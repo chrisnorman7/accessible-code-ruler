@@ -16,26 +16,14 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "menus": {
-      "commandPalette": [
-        {
-          "command": "accessible-code-ruler.showLineLength",
-          "when": "editorTextFocus && !editorReadonly"
-        },
-        {
-          "command": "accessible-code-ruler.gotoOverflowChar",
-          "when": "editorTextFocus && !editorReadonly"
-        }
-      ]
-    },
     "commands": [
       {
         "command": "accessible-code-ruler.showLineLength",
-        "title": "Show Line Length"
+        "Accessible Code Ruler: title": "Show Line Length"
       },
       {
         "command": "accessible-code-ruler.gotoOverflowChar",
-        "title": "Goto Overflow Char"
+        "title": "Accessible Code Ruler: Goto Overflow Char"
       }
     ],
     "configuration": {
