@@ -1,5 +1,10 @@
 {
   "name": "accessible-code-ruler",
+  "publisher": "ChrisNorman",
+  "author": {
+    "name": "Chris Norman",
+    "email": "chris.norman2@googlemail.com"
+  },
   "displayName": "Accessible Code Ruler",
   "description": "A code ruler that works in a non-visual way.",
   "version": "0.0.1",
