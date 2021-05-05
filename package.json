@@ -26,6 +26,18 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "keybindings": [
+      {
+        "command": "accessible-code-ruler.showLineLength",
+        "key": "ctrl+alt+shift+[",
+        "mac": "ctrl+cmd+shift+["
+      },
+      {
+        "command": "accessible-code-ruler.gotoOverflowChar",
+        "key": "ctrl+alt+shift+]",
+        "mac": "ctrl+cmd+shift+]"
+      }
+    ],
     "commands": [
       {
         "command": "accessible-code-ruler.showLineLength",
