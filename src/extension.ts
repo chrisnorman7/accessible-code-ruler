@@ -22,10 +22,10 @@ export function activate(context: vscode.ExtensionContext) {
 				let maxChar: number = getMaxLineLength();
 				if (l > maxChar) {
 					let difference = l - maxChar;
-					return vscode.window.showErrorMessage(`${difference} ${difference === 1 ? "char" : "chars"} over.`);
+					return vscode.window.showInformationMessage(`${difference} ${difference === 1 ? "char" : "chars"} over.`);
 				}
 			} else {
-				return vscode.window.showErrorMessage("editor error");
+				return vscode.window.showErrorMessage("No editor, even though this function has been called by a cursor move.");
 			}
 		}));
 

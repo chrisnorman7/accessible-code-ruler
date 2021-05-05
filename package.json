@@ -29,12 +29,12 @@
     "keybindings": [
       {
         "command": "accessible-code-ruler.showLineLength",
-        "key": "ctrl+alt+shift+[",
+        "key": "ctrl+shift+alt+oem_4",
         "mac": "ctrl+cmd+shift+["
       },
       {
         "command": "accessible-code-ruler.gotoOverflowChar",
-        "key": "ctrl+alt+shift+]",
+        "key": "ctrl+shift+alt+oem_6",
         "mac": "ctrl+cmd+shift+]"
       }
     ],
