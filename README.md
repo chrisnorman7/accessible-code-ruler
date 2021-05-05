@@ -26,4 +26,3 @@ This extension contributes the following commands, which can be bound to hotkeys
 * [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 * [GitHub Repository](https://github.com/chrisnorman7/accessible-code-ruler)
-**Enjoy!**
