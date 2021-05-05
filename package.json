@@ -19,7 +19,7 @@
     "commands": [
       {
         "command": "accessible-code-ruler.showLineLength",
-        "Accessible Code Ruler: title": "Show Line Length"
+        "title": "Accessible Code Ruler: Show Line Length"
       },
       {
         "command": "accessible-code-ruler.gotoOverflowChar",
