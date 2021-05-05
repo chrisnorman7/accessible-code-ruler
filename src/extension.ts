@@ -36,20 +36,18 @@ export function activate(context: vscode.ExtensionContext) {
 				if (editor) {
 					let text = editor.document.lineAt(editor.selection.active.line).text;
 					vscode.window.showInformationMessage(`Line length: ${text.length}.`);
-				} else {
-					return vscode.window.showErrorMessage("editor error");
 				}
 			}));
 
 	context.subscriptions.push(vscode.commands.registerCommand(`${extensionName}.gotoOverflowChar`, () => {
-let editor = vscode.window.activeTextEditor;
-if (editor) {
-	let text = editor.document.lineAt(editor.selection.active.line).text;
-	let lineLength = text.length;
-	let maxChar = Math.min(getMaxLineLength(), lineLength);
-	let position = new vscode.Position(editor.selection.active.line, maxChar);
-	editor.selection = new vscode.Selection(position, position);
-}
+		let editor = vscode.window.activeTextEditor;
+		if (editor) {
+			let text = editor.document.lineAt(editor.selection.active.line).text;
+			let lineLength = text.length;
+			let maxChar = Math.min(getMaxLineLength(), lineLength);
+			let position = new vscode.Position(editor.selection.active.line, maxChar);
+			editor.selection = new vscode.Selection(position, position);
+		}
 	}));
 }
 
