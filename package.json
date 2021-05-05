@@ -21,7 +21,6 @@
     "Formatters"
   ],
   "activationEvents": [
-    "*",
     "onCommand:accessible-code-ruler.showLineLength",
     "onCommand:accessible-code-ruler.gotoOverflowChar"
   ],
