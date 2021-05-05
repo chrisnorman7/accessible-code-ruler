@@ -29,26 +29,27 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		}));
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand(
-			`${extensionName}.showLineLength`, () => {
-				let editor = vscode.window.activeTextEditor;
-				if (editor) {
-					let text = editor.document.lineAt(editor.selection.active.line).text;
-					vscode.window.showInformationMessage(`Line length: ${text.length}.`);
-				}
-			}));
+	let commands = [vscode.commands.registerCommand(
+		`${extensionName}.showLineLength`, () => {
+			let editor = vscode.window.activeTextEditor;
+			if (editor) {
+				let text = editor.document.lineAt(editor.selection.active.line).text;
+				vscode.window.showInformationMessage(`Line length: ${text.length}.`);
+			}
+		}), vscode.commands.registerCommand(`${extensionName}.gotoOverflowChar`, () => {
+			let editor = vscode.window.activeTextEditor;
+			if (editor) {
+				let text = editor.document.lineAt(editor.selection.active.line).text;
+				let lineLength = text.length;
+				let maxChar = Math.min(getMaxLineLength(), lineLength);
+				let position = new vscode.Position(editor.selection.active.line, maxChar);
+				editor.selection = new vscode.Selection(position, position);
+			}
+		})];
 
-	context.subscriptions.push(vscode.commands.registerCommand(`${extensionName}.gotoOverflowChar`, () => {
-		let editor = vscode.window.activeTextEditor;
-		if (editor) {
-			let text = editor.document.lineAt(editor.selection.active.line).text;
-			let lineLength = text.length;
-			let maxChar = Math.min(getMaxLineLength(), lineLength);
-			let position = new vscode.Position(editor.selection.active.line, maxChar);
-			editor.selection = new vscode.Selection(position, position);
-		}
-	}));
+	for (let d of commands) {
+		context.subscriptions.push(d);
+	}
 }
 
 // this method is called when your extension is deactivated
