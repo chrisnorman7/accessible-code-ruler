@@ -11,7 +11,7 @@
   },
   "displayName": "Accessible Code Ruler",
   "description": "A code ruler that works in a non-visual way.",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "engines": {
     "vscode": "^1.55.0"
   },
