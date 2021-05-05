@@ -5,6 +5,10 @@
     "name": "Chris Norman",
     "email": "chris.norman2@googlemail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chrisnorman7/accessible-code-ruler"
+  },
   "displayName": "Accessible Code Ruler",
   "description": "A code ruler that works in a non-visual way.",
   "version": "0.0.1",
