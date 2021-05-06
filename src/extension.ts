@@ -37,16 +37,52 @@ export function activate(context: vscode.ExtensionContext) {
 				vscode.window.showInformationMessage(`Line length: ${text.length}.`);
 			}
 		}));
-	context.subscriptions.push(vscode.commands.registerCommand(`${extensionName}.gotoOverflowChar`, () => {
-		let editor = vscode.window.activeTextEditor;
-		if (editor) {
-			let text = editor.document.lineAt(editor.selection.active.line).text;
-			let lineLength = text.length;
-			let maxChar = Math.min(getMaxLineLength(), lineLength);
-			let position = new vscode.Position(editor.selection.active.line, maxChar);
-			editor.selection = new vscode.Selection(position, position);
-		}
-	}));
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			`${extensionName}.gotoOverflowChar`, () => {
+				let editor = vscode.window.activeTextEditor;
+				if (editor) {
+					let text = editor.document.lineAt(editor.selection.active.line).text;
+					let lineLength = text.length;
+					let maxChar = Math.min(getMaxLineLength(), lineLength);
+					let position = new vscode.Position(editor.selection.active.line, maxChar);
+					editor.selection = new vscode.Selection(position, position);
+				}
+			}));
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			`${extensionName}.addIgnoredLanguage`, () => {
+				let ignoredLanguages = vscode.workspace.getConfiguration(extensionName).get<Array<String>>('ignoredLanguages', []);
+				let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
+				if (currentLanguage === undefined) {
+					vscode.window.showWarningMessage('No current language.');
+				} else if (ignoredLanguages.includes(currentLanguage) === false) {
+					ignoredLanguages.push(currentLanguage);
+				} else {
+					vscode.window.showWarningMessage(`You are already ignoring the ${currentLanguage} language.`);
+				}
+			})
+	);
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			`${extensionName}.removeIgnoredLanguage`, () => {
+				let ignoredLanguages = vscode.workspace.getConfiguration(extensionName).get<Array<String>>('ignoredLanguages', []);
+				let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
+				if (currentLanguage === undefined) {
+					vscode.window.showWarningMessage('No current language.');
+				} else {
+					const index = ignoredLanguages.indexOf(currentLanguage);
+					if (index === -1) {
+						vscode.window.showWarningMessage(`You aren't ignoring the ${currentLanguage} language.`);
+					} else {
+						ignoredLanguages.slice(index, 1);
+					}
+				}
+			}
+		)
+	);
 }
 
 // this method is called when your extension is deactivated

@@ -46,6 +46,14 @@
       {
         "command": "accessible-code-ruler.gotoOverflowChar",
         "title": "Accessible Code Ruler: Goto Overflow Char"
+      },
+      {
+        "command": "accessible-code-ruler.addIgnoredLanguage",
+        "title": "Accessible Code Ruler: Ignore The Current Language"
+      },
+      {
+        "command": "accessible-code-ruler.removeIgnoredLanguage",
+        "title": "Accessible Code Ruler: Don't Ignore The Current Language"
       }
     ],
     "configuration": {
@@ -54,8 +62,14 @@
         "accessible-code-ruler.maximumLineLength": {
           "type": "integer",
           "default": 79,
-          "title": "Maximum Line Length",
-          "description": "The maximum number of characters allowed on a line before warnings are shown."
+          "description": "The maximum number of characters allowed on a line before warnings are shown. This value is used when no language-specific setting is present."
+        },
+        "accessible-code-ruler.ignoredLanguages": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
         }
       }
     }
