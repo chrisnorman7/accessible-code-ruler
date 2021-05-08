@@ -57,14 +57,14 @@
       }
     ],
     "configuration": {
-      "title": "Accessible Code Ruler",
+      "title": "accessibleCodeRuler",
       "properties": {
-        "accessible-code-ruler.maximumLineLength": {
+        "accessibleCodeRuler.maximumLineLength": {
           "type": "integer",
           "default": 79,
           "description": "The maximum number of characters allowed on a line before warnings are shown. This value is used when no language-specific setting is present."
         },
-        "accessible-code-ruler.ignoredLanguages": {
+        "accessibleCodeRuler.ignoredLanguages": {
           "type": "array",
           "default": [],
           "items": {
