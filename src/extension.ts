@@ -4,11 +4,27 @@ import * as vscode from 'vscode';
 
 // The name of the extension.
 const extensionName = 'accessible-code-ruler';
+
+/// The name of the configuration section where the extension options reside.
 const extensionConfigurationName = 'accessibleCodeRuler';
 
+/// The type of the languages dictionary.
+interface LanguageLineLengths {
+	[key: string]: number;
+}
+
+// The configuration ID for the language line lengths.
+const languageLineLengthsConfigurationId = `${extensionConfigurationName}.languageMaximumLineLength`;
+
+/// Get the dictionary of language line lengths.
+function getLanguageLineLengths(): LanguageLineLengths {
+	return vscode.workspace.getConfiguration().get<LanguageLineLengths>(languageLineLengthsConfigurationId, {});
+}
+
 // A function to get the maximum line length.
-function getMaxLineLength(): number {
-	return vscode.workspace.getConfiguration().get<number>(`${extensionConfigurationName}.maximumLineLength`, 79);
+function getMaxLineLength(language: string): number {
+	const languages = getLanguageLineLengths();
+	return languages[language] || vscode.workspace.getConfiguration().get<number>(`${extensionConfigurationName}.maximumLineLength`, 79);
 }
 
 // A function to get the ignored languages list.
@@ -22,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.window.onDidChangeTextEditorSelection(function (e) {
 			const editor = vscode.window.activeTextEditor;
-			const currentLanguage = vscode.window.activeTextEditor?.document.languageId;
+			const currentLanguage = editor?.document.languageId;
 			if (!currentLanguage || getIgnoredLanguages().includes(currentLanguage)) {
 				// Don't bother with this language.
 				return;
@@ -30,7 +46,7 @@ export function activate(context: vscode.ExtensionContext) {
 			if (editor) {
 				const text = editor.document.lineAt(editor.selection.active.line).text;
 				const l = editor.selection.active.character;
-				const maxChar: number = getMaxLineLength();
+				const maxChar: number = getMaxLineLength(currentLanguage);
 				if (l > maxChar) {
 					const difference = l - maxChar;
 					return vscode.window.showInformationMessage(`${difference} ${difference === 1 ? "char" : "chars"} over.`);
@@ -42,7 +58,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(vscode.commands.registerCommand(
 		`${extensionName}.showLineLength`, () => {
-			vscode.window.showInformationMessage(String(getMaxLineLength()));
 			const editor = vscode.window.activeTextEditor;
 			if (editor) {
 				const text = editor.document.lineAt(editor.selection.active.line).text;
@@ -57,7 +72,7 @@ export function activate(context: vscode.ExtensionContext) {
 				if (editor) {
 					const text = editor.document.lineAt(editor.selection.active.line).text;
 					const lineLength = text.length;
-					const maxChar = Math.min(getMaxLineLength(), lineLength);
+					const maxChar = Math.min(getMaxLineLength(editor.document.languageId), lineLength);
 					const position = new vscode.Position(editor.selection.active.line, maxChar);
 					editor.selection = new vscode.Selection(position, position);
 				}
@@ -81,7 +96,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
-			`${extensionName}.removeIgnoredLanguage`, async () => {
+			`${extensionName}.removeIgnoredLanguage`, () => {
 				const ignoredLanguages = getIgnoredLanguages();
 				const currentLanguage = vscode.window.activeTextEditor?.document.languageId;
 				if (currentLanguage === undefined) {
@@ -93,6 +108,36 @@ export function activate(context: vscode.ExtensionContext) {
 						vscode.window.showInformationMessage(`No longer ignoring ${currentLanguage} (${ignoredLanguages}).`);
 					} else {
 						vscode.window.showWarningMessage(`You aren't ignoring ${currentLanguage}.`);
+					}
+				}
+			}
+		)
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			`${extensionName}.setLanguageLineLength`, async () => {
+				const currentLanguage = vscode.window.activeTextEditor?.document.languageId;
+				if (!currentLanguage) {
+					vscode.window.showErrorMessage('No current editor found.');
+					return;
+				}
+				const lengthString = await vscode.window.showInputBox(
+					{
+						value: String(getMaxLineLength(currentLanguage)),
+						prompt: `Enter the line length to be used for ${currentLanguage}`,
+					}
+				);
+				if (lengthString) {
+					const length = Number.parseInt(lengthString);
+					if (isNaN(length) || length <= 0) {
+						vscode.window.showErrorMessage(`Invalid line length: ${lengthString}.`);
+						return;
+					} else {
+						const languages: LanguageLineLengths = getLanguageLineLengths();
+						languages[currentLanguage] = Number.parseInt(lengthString);
+						vscode.workspace.getConfiguration().update(languageLineLengthsConfigurationId, languages);
+						vscode.window.showInformationMessage(`Line length for ${currentLanguage} set to ${length}.`);
 					}
 				}
 			}

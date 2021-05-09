@@ -22,7 +22,10 @@
   ],
   "activationEvents": [
     "onCommand:accessible-code-ruler.showLineLength",
-    "onCommand:accessible-code-ruler.gotoOverflowChar"
+    "onCommand:accessible-code-ruler.gotoOverflowChar",
+    "onCommand:accessible-code-ruler.addIgnoredLanguage",
+    "onCommand:accessible-code-ruler.removeIgnoredLanguage",
+    "onCommand:accessible-code-ruler.setLanguageLineLength"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -54,6 +57,10 @@
       {
         "command": "accessible-code-ruler.removeIgnoredLanguage",
         "title": "Accessible Code Ruler: Don't Ignore The Current Language"
+      },
+      {
+        "command": "accessible-code-ruler.setLanguageLineLength",
+        "title": "Accessible Code Ruler: Set the line length for the current language"
       }
     ],
     "configuration": {
@@ -70,6 +77,18 @@
           "items": {
             "type": "string"
           }
+        },
+        "accessibleCodeRuler.languageMaximumLineLength": {
+          "type": "object",
+          "default": {},
+          "description": "The line lengths per language.",
+          "examples": [
+            {
+              "html": 200,
+              "python": 79,
+              "css": 40
+            }
+          ]
         }
       }
     }
