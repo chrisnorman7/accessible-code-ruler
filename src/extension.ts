@@ -8,13 +8,11 @@ const extensionName = 'accessible-code-ruler';
 /// The name of the configuration section where the extension options reside.
 const extensionConfigurationName = 'accessibleCodeRuler';
 
-/// The type of the languages dictionary.
-interface LanguageLineLengths {
-	[key: string]: number;
-}
-
 // The configuration ID for the language line lengths.
 const languageLineLengthsConfigurationId = `${extensionConfigurationName}.languageMaximumLineLength`;
+
+/// The type of language line lengths.
+type LanguageLineLengths = { [index: string]: number };
 
 /// Get the dictionary of language line lengths.
 function getLanguageLineLengths(): LanguageLineLengths {
@@ -134,11 +132,33 @@ export function activate(context: vscode.ExtensionContext) {
 						vscode.window.showErrorMessage(`Invalid line length: ${lengthString}.`);
 						return;
 					} else {
-						const languages: LanguageLineLengths = getLanguageLineLengths();
+						const languages = getLanguageLineLengths();
 						languages[currentLanguage] = Number.parseInt(lengthString);
 						vscode.workspace.getConfiguration().update(languageLineLengthsConfigurationId, languages);
 						vscode.window.showInformationMessage(`Line length for ${currentLanguage} set to ${length}.`);
 					}
+				}
+			}
+		)
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			`${extensionName}.clearLanguageLineLength`, () => {
+				const editor = vscode.window.activeTextEditor;
+				const currentLanguage = editor?.document.languageId;
+				if (!currentLanguage) {
+					return;
+				}
+				const oldLanguages = getLanguageLineLengths();
+				if (oldLanguages[currentLanguage]) {
+					vscode.window.showInformationMessage('Not deleted.');
+					oldLanguages[currentLanguage] = undefined;
+					vscode.window.showInformationMessage('Deleted.');
+					vscode.workspace.getConfiguration().update(languageLineLengthsConfigurationId, oldLanguages);
+					vscode.window.showInformationMessage(`Removed language ${currentLanguage}.`);
+				} else {
+					vscode.window.showInformationMessage(`No custom configuration found for ${currentLanguage}.`);
 				}
 			}
 		)

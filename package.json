@@ -25,7 +25,8 @@
     "onCommand:accessible-code-ruler.gotoOverflowChar",
     "onCommand:accessible-code-ruler.addIgnoredLanguage",
     "onCommand:accessible-code-ruler.removeIgnoredLanguage",
-    "onCommand:accessible-code-ruler.setLanguageLineLength"
+    "onCommand:accessible-code-ruler.setLanguageLineLength",
+    "onCommand:accessible-code-ruler.clearLanguageLineLength"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -61,6 +62,10 @@
       {
         "command": "accessible-code-ruler.setLanguageLineLength",
         "title": "Accessible Code Ruler: Set the line length for the current language"
+      },
+      {
+        "command": "accessible-code-ruler.clearLanguageLineLength",
+        "title": "Accessible Code Ruler: Clear the line length for the current language"
       }
     ],
     "configuration": {
